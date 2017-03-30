@@ -50,14 +50,6 @@ public class Lanceur {
 		System.out.println("--------------MODIFIER CLIENT 2---------------------------------");
 		s.modifierClient(2, "Doe", "John");
 		
-		String keyword = "doe";
-		System.out.println("--------------CHERCHER CLIENT '"+ keyword +"'---------------------------------");
-		
-		clients = s.chercherParMC(keyword);
-		
-		for (Client client : clients) {
-			System.out.println(client);
-		}
 		System.out.println("--------------CHERCHER CLIENT 2---------------------------------");
 		try {
 			System.out.println(s.chercherClient(2));
@@ -72,6 +64,24 @@ public class Lanceur {
 		}
 		System.out.println("--------------SUPPRIMER CLIENT 1---------------------------------");
 		s.supprimerClient(1);
+		
+		String keyword = "dOe";
+		System.out.println("--------------CHERCHER CLIENT '"+ keyword +"'---------------------------------");
+		
+		clients = s.chercherParMC(keyword);
+		
+		for (Client client : clients) {
+			System.out.println(client);
+		}
+		/*
+		System.out.println("--------------AJOUTER UN CLIENT---------------------------------");
+		Client c1 = new Client();
+		c1.setNom("Redford");
+		c1.setPrenom("Robert");
+		c1.setCouleurYeux("vert");
+		s.ajouterClient(c1);
+		*/
+
 		
 	}
 

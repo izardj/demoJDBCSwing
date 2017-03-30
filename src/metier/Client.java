@@ -4,6 +4,14 @@ public class Client {
 	private int id;
 	private String nom;
 	private String prenom;
+	private String couleurYeux;
+	
+	public String getCouleurYeux() {
+		return couleurYeux;
+	}
+	public void setCouleurYeux(String couleurYeux) {
+		this.couleurYeux = couleurYeux;
+	}
 	public int getId() {
 		return id;
 	}
@@ -24,7 +32,7 @@ public class Client {
 	}
 	@Override
 	public String toString() {
-		return "Client [id=" + id + ", nom=" + nom + ", prenom=" + prenom + "]";
+		return "Client [id=" + id + ", nom=" + nom + ", prenom=" + prenom + ", couleurYeux=" + couleurYeux + "]";
 	}
 	
 	

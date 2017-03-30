@@ -23,9 +23,10 @@ public class Dao implements IDao {
 			// 3- créer la requête
 			//PreparedStatement ps = conn.prepareStatement("INSERT INTO Client(nom, prenom) VALUES ('" + c.getNom() + "', '" + c.getPrenom() + "')");
 			
-			PreparedStatement ps = conn.prepareStatement("INSERT INTO Client(nom, prenom) VALUES (?, ?)");
+			PreparedStatement ps = conn.prepareStatement("INSERT INTO Client(nom, prenom, couleuryeux) VALUES (?, ?, ?)");
 			ps.setString(1, c.getNom());
 			ps.setString(2, c.getPrenom());
+			ps.setString(3, c.getCouleurYeux());
 			
 			// 4- executer la requête
 			ps.executeUpdate();
@@ -43,6 +44,74 @@ public class Dao implements IDao {
 			// code qui est executé quelque soit les étapes précédentes
 		}
 
+	}
+
+	@Override
+	public Collection<Client> listerClients() {
+	
+		Collection<Client> clients = new ArrayList<Client>();
+		try {
+			// 1- charger le pilote
+			Class.forName("com.mysql.jdbc.Driver");
+			// 2- créer la connexion
+			Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/bddclients", "root", "");
+			// 3- créer la requête
+			PreparedStatement ps = conn.prepareStatement("SELECT * FROM Client");
+			// 4- executer la requête
+			ResultSet rs = ps.executeQuery();
+			// 5- présenter les résultats
+			while (rs.next()) {
+				Client c = new Client();
+				c.setId(rs.getInt("id"));
+				c.setNom(rs.getString("nom"));
+				c.setPrenom(rs.getString("prenom"));
+				c.setCouleurYeux(rs.getString("couleuryeux"));
+				
+				clients.add(c);
+			}
+			// 6- fermer la connexion
+			conn.close();
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			// code qui est executé quelque soit les étapes précédentes
+		}
+		return clients;
+	}
+
+	@Override
+	public void modifierClient(int id, String nom, String prenom) {
+	
+		try {
+			// 1- charger le pilote
+			Class.forName("com.mysql.jdbc.Driver");
+			// 2- créer la connexion
+			Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/bddclients", "root", "");
+			// 3- créer la requête
+			PreparedStatement ps = conn.prepareStatement("UPDATE client SET nom = ? , prenom = ? WHERE id = ?");
+			ps.setString(1, nom);
+			ps.setString(2, prenom);
+			ps.setInt(3, id);
+	
+			// 4- executer la requête
+			ps.executeUpdate();
+			// 5- présenter les résultats
+	
+			// 6- fermer la connexion
+			conn.close();
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			// code qui est executé quelque soit les étapes précédentes
+		}
 	}
 
 	@Override
@@ -67,6 +136,7 @@ public class Dao implements IDao {
 				c.setId(rs.getInt("id"));
 				c.setNom(rs.getString("nom"));
 				c.setPrenom(rs.getString("prenom"));
+				c.setCouleurYeux(rs.getString("couleuryeux"));
 				conn.close();
 
 			}
@@ -84,37 +154,6 @@ public class Dao implements IDao {
 		}
 		
 		return c;
-	}
-
-	@Override
-	public void modifierClient(int id, String nom, String prenom) {
-
-		try {
-			// 1- charger le pilote
-			Class.forName("com.mysql.jdbc.Driver");
-			// 2- créer la connexion
-			Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/bddclients", "root", "");
-			// 3- créer la requête
-			PreparedStatement ps = conn.prepareStatement("UPDATE client SET nom = ? , prenom = ? WHERE id = ?");
-			ps.setString(1, nom);
-			ps.setString(2, prenom);
-			ps.setInt(3, id);
-
-			// 4- executer la requête
-			ps.executeUpdate();
-			// 5- présenter les résultats
-
-			// 6- fermer la connexion
-			conn.close();
-		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} finally {
-			// code qui est executé quelque soit les étapes précédentes
-		}
 	}
 
 	@Override
@@ -147,42 +186,6 @@ public class Dao implements IDao {
 	}
 
 	@Override
-	public Collection<Client> listerClients() {
-
-		Collection<Client> clients = new ArrayList<Client>();
-		try {
-			// 1- charger le pilote
-			Class.forName("com.mysql.jdbc.Driver");
-			// 2- créer la connexion
-			Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/bddclients", "root", "");
-			// 3- créer la requête
-			PreparedStatement ps = conn.prepareStatement("SELECT * FROM Client");
-			// 4- executer la requête
-			ResultSet rs = ps.executeQuery();
-			// 5- présenter les résultats
-			while (rs.next()) {
-				Client c = new Client();
-				c.setId(rs.getInt("id"));
-				c.setNom(rs.getString("nom"));
-				c.setPrenom(rs.getString("prenom"));
-
-				clients.add(c);
-			}
-			// 6- fermer la connexion
-			conn.close();
-		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} finally {
-			// code qui est executé quelque soit les étapes précédentes
-		}
-		return clients;
-	}
-
-	@Override
 	public Collection<Client> chercherParMC(String mc) {
 		
 		Collection<Client> clients = new ArrayList<Client>();
@@ -192,7 +195,9 @@ public class Dao implements IDao {
 			// 2- créer la connexion
 			Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/bddclients", "root", "");
 			// 3- créer la requête
-			PreparedStatement ps = conn.prepareStatement("SELECT * FROM Client WHERE UPPER(nom) LIKE UPPER('%"+ mc +"%')");
+			//PreparedStatement ps = conn.prepareStatement("SELECT * FROM Client WHERE UPPER(nom) LIKE UPPER('%"+ mc +"%')");
+			PreparedStatement ps = conn.prepareStatement("SELECT * FROM Client WHERE UPPER(nom) LIKE ?");
+			ps.setString(1, "%"+mc.toUpperCase()+"%");
 			// 4- executer la requête
 			ResultSet rs = ps.executeQuery();
 			// 5- présenter les résultats
@@ -201,6 +206,7 @@ public class Dao implements IDao {
 				c.setId(rs.getInt("id"));
 				c.setNom(rs.getString("nom"));
 				c.setPrenom(rs.getString("prenom"));
+				c.setCouleurYeux(rs.getString("couleuryeux"));
 
 				clients.add(c);
 			}
