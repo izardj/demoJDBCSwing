@@ -1,5 +1,10 @@
 package presentation;
 
+import java.util.ArrayList;
+import java.util.Collection;
+
+import exceptions.ClientExistePasException;
+import metier.Client;
 import service.ClientService;
 import service.IClientService;
 import service.IClientServiceVip;
@@ -12,6 +17,10 @@ public class Lanceur {
 		// déclaration de l'interface
 		IClientService s = new ClientService();
 		IClientServiceVip sv = new ClientService();
+		Collection<Client> clients = new ArrayList<Client>();
+		Client c = new Client();
+		c.setNom("Smith");
+		c.setPrenom("Robert");
 		
 		//declaration de la classe;
 		ClientService cs = new ClientService();
@@ -29,7 +38,38 @@ public class Lanceur {
 		/*cs.direAurevoir();
 		cs.direBonjour();
 		cs.jesuisVip();*/
+		System.out.println("--------------AJOUTER UN CLIENT---------------------------------");
+		//s.ajouterClient(c);
+		System.out.println("--------------LISTER TOUS LES CLIENTS---------------------------------");
 		
+		clients = s.listerClients();
+		
+		for (Client client : clients) {
+			System.out.println(client);
+		}
+		System.out.println("--------------MODIFIER CLIENT 2---------------------------------");
+		s.modifierClient(2, "Doe", "John");
+		
+		String keyword = "doe";
+		System.out.println("--------------CHERCHER CLIENT '"+ keyword +"'---------------------------------");
+		
+		clients = s.chercherParMC(keyword);
+		
+		for (Client client : clients) {
+			System.out.println(client);
+		}
+		System.out.println("--------------CHERCHER CLIENT 2---------------------------------");
+		try {
+			System.out.println(s.chercherClient(2));
+		} catch (ClientExistePasException e) {
+			System.out.println(e.getMessage());
+		}
+		System.out.println("--------------CHERCHER CLIENT 250 (EXISTE PAS)---------------------------------");
+		try {
+			System.out.println(s.chercherClient(250));
+		} catch (ClientExistePasException e) {
+			System.out.println(e.getMessage());
+		}
 	}
 
 }

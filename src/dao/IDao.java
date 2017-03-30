@@ -1,14 +1,12 @@
-package service;
+package dao;
 
 import java.util.Collection;
 
 import exceptions.ClientExistePasException;
 import metier.Client;
 
-public interface IClientService {
-	public void direBonjour();
-	public void direAurevoir();
-	//public void jesuisVip();
+public interface IDao {
+	
 	public void ajouterClient(Client c);
 	public void modifierClient(int id, String nom, String prenom);
 	public void supprimerClient(Client c);

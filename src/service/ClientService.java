@@ -1,7 +1,16 @@
 package service;
 
+import java.util.Collection;
+
+import dao.Dao;
+import dao.IDao;
+import exceptions.ClientExistePasException;
+import metier.Client;
+
 public class ClientService implements IClientService,IClientServiceVip {
 
+	private IDao idao = new Dao();
+	
 	@Override
 	public void direBonjour() {
 		// TODO Auto-generated method stub
@@ -19,6 +28,36 @@ public class ClientService implements IClientService,IClientServiceVip {
 	public void jesuisVip() {
 		// TODO Auto-generated method stub
 		System.out.println("JE SUIS VIP");
+	}
+
+	@Override
+	public void ajouterClient(Client c) {
+		idao.ajouterClient(c);
+	}
+
+	@Override
+	public void modifierClient(int id, String nom, String prenom) {
+		idao.modifierClient(id, nom, prenom);
+	}
+
+	@Override
+	public void supprimerClient(Client c) {
+		idao.supprimerClient(c);
+	}
+
+	@Override
+	public Collection<Client> listerClients() {
+		return idao.listerClients();
+	}
+
+	@Override
+	public Collection<Client> chercherParMC(String mc) {
+		return idao.chercherParMC(mc);
+	}
+
+	@Override
+	public Client chercherClient(int id) throws ClientExistePasException {
+		return idao.chercherClient(id);
 	}
 
 }
