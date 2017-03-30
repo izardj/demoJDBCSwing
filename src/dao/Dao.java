@@ -118,16 +118,18 @@ public class Dao implements IDao {
 	}
 
 	@Override
-	public void supprimerClient(Client c) {
+	public void supprimerClient(int id) throws ClientExistePasException {
 		try {
 			// 1- charger le pilote
 			Class.forName("com.mysql.jdbc.Driver");
 			// 2- créer la connexion
 			Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/bddclients", "root", "");
 			// 3- créer la requête
-			PreparedStatement ps = conn.prepareStatement("DELETE FROM Client WHERE id = " + c.getId());
+			PreparedStatement ps = conn.prepareStatement("DELETE FROM Client WHERE id = " + id);
 			// 4- executer la requête
-			ps.executeUpdate();
+			if(ps.executeUpdate() == 0)
+				throw new ClientExistePasException("Le client id = "+ id +" à effacer n'existe pas");
+			
 			// 5- présenter les résultats
 
 			// 6- fermer la connexion

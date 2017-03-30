@@ -23,7 +23,7 @@ public class Lanceur {
 		c.setPrenom("Robert");
 		
 		//declaration de la classe;
-		ClientService cs = new ClientService();
+		//ClientService cs = new ClientService();
 		System.out.println("--------------CLIENT NORMAL-------------------------------");		
 		// utilisation de l'interface
 		s.direAurevoir();
@@ -70,6 +70,9 @@ public class Lanceur {
 		} catch (ClientExistePasException e) {
 			System.out.println(e.getMessage());
 		}
+		System.out.println("--------------SUPPRIMER CLIENT 1---------------------------------");
+		s.supprimerClient(1);
+		
 	}
 
 }

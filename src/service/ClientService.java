@@ -41,8 +41,12 @@ public class ClientService implements IClientService,IClientServiceVip {
 	}
 
 	@Override
-	public void supprimerClient(Client c) {
-		idao.supprimerClient(c);
+	public void supprimerClient(int id) {
+		try {
+			idao.supprimerClient(id);
+		} catch (ClientExistePasException e) {
+			System.out.println(e.getMessage());
+		}
 	}
 
 	@Override
