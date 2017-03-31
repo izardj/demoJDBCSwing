@@ -12,8 +12,13 @@ import service.IClientServiceVip;
 public class Lanceur {
 
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
 		
+		// Fenetre swing
+		Fenetre f = new Fenetre("MA FENETRE");
+		f.setVisible(true);
+		//f.setResizable(false);
+
+
 		// déclaration de l'interface
 		IClientService s = new ClientService();
 		IClientServiceVip sv = new ClientService();
@@ -73,6 +78,7 @@ public class Lanceur {
 		for (Client client : clients) {
 			System.out.println(client);
 		}
+		
 		/*
 		System.out.println("--------------AJOUTER UN CLIENT---------------------------------");
 		Client c1 = new Client();
