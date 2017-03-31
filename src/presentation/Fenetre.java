@@ -2,6 +2,8 @@ package presentation;
 
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -9,6 +11,10 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+
+import metier.Client;
+import service.ClientService;
+import service.IClientService;
 
 public class Fenetre extends JFrame {
 
@@ -20,6 +26,8 @@ public class Fenetre extends JFrame {
 	private JTextField jtf2 = new JTextField(12);
 	private JTextField jtf3 = new JTextField(12);
 	private JButton jb1 = new JButton("ajouter");
+	private IClientService service = new ClientService();
+	private Client c = new Client();
 
 	Fenetre(String nom) {
 
@@ -61,6 +69,38 @@ public class Fenetre extends JFrame {
 		jp5.add(jp4);
 
 		this.add(jp5, BorderLayout.NORTH);
+		
+		// rendre le bouton actif en lui donnant une action à réaliser
+		jb1.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// recuperation des paramètres saisis par l'utilisateur
+				String nom = jtf1.getText();
+				String prenom = jtf2.getText();
+				String couleurYeux = jtf3.getText();
+				
+				// appel de la couche service
+				c.setNom(nom);
+				c.setPrenom(prenom);
+				c.setCouleurYeux(couleurYeux);
+				
+				service.ajouterClient(c);
+				
+				// vider les champs après ajout en base
+				jtf1.setText("");
+				jtf2.setText("");
+				jtf3.setText("");
+			}
+		});
 
+	}
+	
+	public static void main(String[] args) {
+		
+		// Fenetre swing
+		Fenetre f = new Fenetre("MA FENETRE");
+		f.setVisible(true);
+		//f.setResizable(false);
 	}
 }
